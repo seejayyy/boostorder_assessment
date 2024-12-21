@@ -2,14 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_projects/models/product.dart';
-import 'package:flutter_projects/models/product_response.dart';
-import 'package:flutter_projects/utils/constants.dart';
+import 'package:flutter_projects/services/product_service.dart';
+import 'package:flutter_projects/widgets/product_card.dart';
 
 class CatalogScreen extends StatefulWidget {
   const CatalogScreen({super.key});
@@ -20,18 +16,45 @@ class CatalogScreen extends StatefulWidget {
 
 class _CatalogScreenState extends State<CatalogScreen> {
   late StreamSubscription _connectionSubscription;
+  final ProductService _productService = ProductService();
+  List<Product> _products = [];
+  String? _message;
+  bool _isLoading = true; // Track loading state
 
-  void checkConnectivity(List<ConnectivityResult> results) {
-    if (results.contains(ConnectivityResult.mobile) ||
-        results.contains(ConnectivityResult.wifi)) {
-      // Fetch data from Boostorder
-      fetchData();
-    } else {
-      // Retrieve data from Hive box
-      List<Product> products = getProducts() as List<Product>;
+  /// This method is to check if the app has wifi/mobile data connection
+  /// If it has connection,
+  ///   it will fetch data from Boostorder
+  ///   Parse the data and save in Hive box
+  /// Else,
+  ///   it will get the data from the Hive box
+  void checkConnectivity(List<ConnectivityResult> results) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      if (results.contains(ConnectivityResult.mobile) ||
+          results.contains(ConnectivityResult.wifi)) {
+        // Fetch data from Boostorder
+        _products = await _productService.fetchData();
+        // Save the data in Hive box
+        _productService.saveProduct(_products);
+      } else {
+        // Retrieve data from Hive box
+        _products = await _productService.getProducts();
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _message = e.toString();
+        _isLoading = false;
+      });
     }
   }
 
+  /// Initialise the connectivity subscription
   @override
   void initState() {
     super.initState();
@@ -40,74 +63,70 @@ class _CatalogScreenState extends State<CatalogScreen> {
         Connectivity().onConnectivityChanged.listen(checkConnectivity);
   }
 
+  /// Dispose the connectivity subscription after app is closed
   @override
   void dispose() {
     _connectionSubscription.cancel();
     super.dispose();
   }
 
-  Future<void> saveProduct(List<Product> products) async {
-    final box = await Hive.openBox<Product>('productsBox');
-    for (Product product in products) {
-      await box.put(product.id, product);
-    }
-    log('Products saved successfully!');
-  }
-
-  // Fetch data from Boostorder
-  Future<void> fetchData() async {
-    final String username = AppConstants.apiUsername;
-    final String password = AppConstants.apiPassword;
-    final url = 'https://cloud.boostorder.com/bo-mart/api/v1/wp-json/wc/v1/bo/products';
-    final queryParameters = {
-      'page': '1',
-    };
-    final uri = Uri.parse(url).replace(queryParameters: queryParameters);
-    // Encode username and password in Base64
-    String basicAuth =
-        'Basic ${base64Encode(utf8.encode('$username:$password'))}';
-
-    try {
-      final response = await http.get(
-        uri,
-        headers: {'Authorization': basicAuth},
-      );
-
-      if (response.statusCode == 200) {
-        // Decode JSON string
-        Map<String, dynamic> jsonData = jsonDecode(response.body);
-
-        // Parse the JSON string
-        List<Product> products = ProductResponse.fromJson(jsonData).products;
-
-        // save the products to local storage
-        saveProduct(products);
-      } else {
-        log('Failed with status code: ${response.statusCode}');
-      }
-    } catch (e) {
-      log('Error: $e');
-    }
-  }
-
-  Future<Iterable> getProducts() async {
-    // Open the Hive box
-    final box = await Hive.openBox('productsBox');
-
-    // Retrieve all data
-    final allData = box.values;
-
-    return allData;
-  }
-
   @override
   Widget build(BuildContext context) {
+    Widget productCards;
+
+    if (_isLoading) {
+      productCards = Center(child: CircularProgressIndicator()); // Loading state
+    } else if (_message != null) {
+      productCards = Center(child: Text('Error: $_message')); // Error state
+    } else if (_products.isEmpty) {
+      productCards = Center(child: Text('No products found')); // Empty state
+    } else {
+      productCards = ListView.builder(
+        itemCount: _products.length,
+        itemBuilder: (context, index) {
+          return ProductCard(product: _products[index]); // Product list
+        },
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Catalog'),
-        backgroundColor: Colors.blue,
-        titleTextStyle: TextStyle(color: Colors.white),
-      ),
-    );
+        appBar: AppBar(
+          title: Text('Categories Name'),
+          actions: [
+
+          ],
+        ),
+        body: Column(
+          children: [
+            // Search Bar
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SearchBar(
+                      elevation: WidgetStateProperty.all(0.5),
+                      shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0))),
+                      leading: const Icon(Icons.search),
+                      hintText: 'Search',
+                    ),
+                  ),
+                  // Icon next to SearchBar
+                  IconButton(
+                    icon: Icon(Icons.shopping_cart, size: 28),
+                    onPressed: () {
+                      print('Filter button pressed');
+                    },
+                  ),
+                ],
+              ),
+            ),
+            // Expanded to allow ListView to take remaining space
+            Expanded(
+              child: productCards,
+            ),
+          ],
+        ));
   }
 }
