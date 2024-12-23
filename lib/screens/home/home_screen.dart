@@ -18,25 +18,20 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body:
         Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/catalogpage');
-                },
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2)),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 16)
-                ),
-                child: Text('Catalog'),
+          child: TextButton(
+            onPressed: (){
+              Navigator.pushNamed(context, '/catalogpage');
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(2)),
               ),
-            ],
-          )
+              padding: EdgeInsets.symmetric(horizontal: 16)
+            ),
+          child: Text('Catalog', style: TextStyle(fontSize: 18), ),
+        ),
       )
     );
   }
