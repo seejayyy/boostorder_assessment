@@ -135,7 +135,7 @@ class _CartScreenState extends State<CartScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SizedBox(
-                    width: 100,
+                    width: 110,
                     child: IntrinsicWidth(
                       child: Container(
                         padding: EdgeInsets.only(left: 8), // Optional padding inside the container
@@ -163,7 +163,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   SizedBox(width: 16),
                   SizedBox(
-                    width: 100,
+                    width: 110,
                     child: Container(
                       padding: EdgeInsets.only(left: 8), // Optional padding inside the container
                       decoration: const BoxDecoration(
