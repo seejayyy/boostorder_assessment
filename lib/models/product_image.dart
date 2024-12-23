@@ -1,22 +1,13 @@
-import 'package:hive/hive.dart';
+class ImageData {
 
-part 'product_image.g.dart';
-
-@HiveType(typeId: 2) // Unique typeId for ImageData
-class ImageData extends HiveObject {
-  @HiveField(0)
   final String src;
 
-  @HiveField(1)
   final String srcSmall;
 
-  @HiveField(2)
   final String srcMedium;
 
-  @HiveField(3)
   final String srcLarge;
 
-  @HiveField(4)
   final String? youtubeVideoUrl;
 
   ImageData({

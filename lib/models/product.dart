@@ -1,40 +1,18 @@
 import 'package:flutter_projects/models/product_attributes.dart';
-import 'package:hive/hive.dart';
 import 'package:flutter_projects/models/product_image.dart';
 import 'package:flutter_projects/models/product_variation.dart';
 
-part 'product.g.dart';
+class Product {
 
-@HiveType(typeId: 0) // Unique typeId for Product
-class Product extends HiveObject {
-  @HiveField(0)
   final int id;
-
-  @HiveField(1)
   final String? name;
-
-  @HiveField(2)
   final String status;
-
-  @HiveField(3)
   final String? catalogVisibility;
-
-  @HiveField(4)
   final String sku;
-
-  @HiveField(5)
   final String? regularPrice;
-
-  @HiveField(6)
   final int stockQuantity;
-
-  @HiveField(7)
   final List<ImageData> images;
-
-  @HiveField(8)
   final List<Attributes> attributes;
-
-  @HiveField(9)
   final List<Variation> variations;
 
   Product({
@@ -74,6 +52,7 @@ class Product extends HiveObject {
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
+    'status': status,
     'catalog_visibility': catalogVisibility,
     'sku': sku,
     'regular_price': regularPrice,

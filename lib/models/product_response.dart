@@ -1,11 +1,6 @@
-import 'package:hive/hive.dart';
 import 'product.dart';
 
-part 'product_response.g.dart';
-
-@HiveType(typeId: 4) // Unique typeId for ProductResponse
-class ProductResponse extends HiveObject {
-  @HiveField(0)
+class ProductResponse{
   final List<Product> products;
 
   ProductResponse({required this.products});

@@ -1,17 +1,10 @@
-import 'package:hive/hive.dart';
+class Inventory {
 
-part 'product_inventory.g.dart';
+  final int? branchId;
 
-@HiveType(typeId: 3)
-class Inventory extends HiveObject {
-  @HiveField(0)
-  final int branchId;
-
-  @HiveField(1)
   final int? batchId;
 
-  @HiveField(2)
-  final num stockQuantity;
+  final num? stockQuantity;
 
   Inventory({
     required this.branchId,
@@ -25,6 +18,14 @@ class Inventory extends HiveObject {
       batchId: json['batch_id'],
       stockQuantity: json['stock_quantity'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': branchId,
+      'name': batchId,
+      'slug': stockQuantity,
+    };
   }
 
   @override

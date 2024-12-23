@@ -1,36 +1,15 @@
-import 'package:hive/hive.dart';
-
-part 'product_attributes.g.dart';
-
 enum AttributeType { parent, variation }
 
-@HiveType(typeId: 1)
-class Attributes extends HiveObject{
-  @HiveField(0)
-  final int id;
+class Attributes {
 
-  @HiveField(1)
-  final String name;
-
-  @HiveField(2)
-  final String slug;
-
-  @HiveField(3)
+  final int? id;
+  final String? name;
+  final String? slug;
   final int? position;
-
-  @HiveField(4)
   final bool? visible;
-
-  @HiveField(5)
   final bool? variation;
-
-  @HiveField(6)
-  final AttributeType type;
-
-  @HiveField(7)
+  final AttributeType? type;
   final List<String>? options; // For Parent Attributes
-
-  @HiveField(8)
   final String? option;
 
   Attributes({

@@ -2,20 +2,13 @@ import 'package:flutter_projects/models/product.dart';
 import 'package:flutter_projects/models/product_attributes.dart';
 import 'package:flutter_projects/models/product_image.dart';
 import 'package:flutter_projects/models/product_inventory.dart';
-import 'package:hive/hive.dart';
 
-part 'product_variation.g.dart';
-
-@HiveType(typeId: 5) // Unique typeId for Variation
 class Variation extends Product{
 
-  @HiveField(10)
   final List<Inventory> inventory;
 
-  @HiveField(11)
   final String uom;
 
-  @HiveField(12)
   final List<ImageData> image;
 
   Variation({
@@ -68,9 +61,19 @@ class Variation extends Product{
 
   @override
   Map<String, dynamic> toJson() => {
-      'id': id,
-      'sku': sku,
-      'regular_price': regularPrice,
+    'id': id,
+    'name': name,
+    'status': status,
+    'catalog_visibility': catalogVisibility,
+    'sku': sku,
+    'regular_price': regularPrice,
+    'stock_quantity': stockQuantity,
+    'images': images.map((e) => e.toJson()).toList(),
+    'attributes': attributes.map((e) => e.toJson()).toList(),
+    'variations': variations.map((e) => e.toJson()).toList(),
+    'inventory': inventory.map((e) => e.toJson()).toList(),
+    'uom': uom,
+    'image': image.map((e) => e.toJson()).toList(),
   };
 
   @override
