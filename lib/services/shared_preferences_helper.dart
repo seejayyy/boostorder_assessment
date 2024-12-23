@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert'; // For JSON encoding/decoding
 import '../models/product.dart'; // Adjust the import path as necessary
@@ -24,6 +26,6 @@ class SharedPreferencesHelper {
   static Future<void> clearAllData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    print('All data cleared from SharedPreferences.');
+    log('All data cleared from SharedPreferences.');
   }
 }

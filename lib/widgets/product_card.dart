@@ -11,8 +11,7 @@ class ProductCard extends StatefulWidget {
   final Function(CartItem) onAddToCart;
 
   const ProductCard(
-      {Key? key, required this.product, required this.onAddToCart})
-      : super(key: key);
+      {super.key, required this.product, required this.onAddToCart});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -23,25 +22,10 @@ class _ProductCardState extends State<ProductCard> {
   late Product selectedVariation;
   int quantity = 1;
   late String productSku;
-  // late String productName;
   late String productPrice;
   late String productUOM;
   String? selectedUom;
   num? stockQuantity;
-
-  void _increaseQuantity() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void _decreaseQuantity() {
-    setState(() {
-      if (quantity > 1) {
-        quantity--;
-      }
-    });
-  }
 
   void _addToCart() {
     if (selectedVariation != null && selectedUom != null) {
@@ -54,7 +38,7 @@ class _ProductCardState extends State<ProductCard> {
         ),
       );
     } else {
-      print('Error: Variation or UOM is not selected');
+      log('Error: Variation or UOM is not selected');
     }
   }
 

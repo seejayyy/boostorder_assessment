@@ -12,29 +12,20 @@ class Variation extends Product{
   final List<ImageData> image;
 
   Variation({
-    required int id,
-    required String name,
-    required String status,
-    required String catalogVisibility,
-    required String sku,
-    required String? regularPrice,
-    required int stockQuantity,
-    required List<ImageData> images,
-    required List<Attributes> attributes,
+    required super.id,
+    required String super.name,
+    required super.status,
+    required String super.catalogVisibility,
+    required super.sku,
+    required super.regularPrice,
+    required super.stockQuantity,
+    required super.images,
+    required super.attributes,
     required this.inventory,
     required this.uom,
     required this.image,
   }) :
         super(
-        id: id,
-        name: name,
-        status: status,
-        catalogVisibility: catalogVisibility,
-        sku: sku,
-        regularPrice: regularPrice,
-        stockQuantity: stockQuantity,
-        images: images,
-        attributes: attributes,
         variations: [],
       );
 

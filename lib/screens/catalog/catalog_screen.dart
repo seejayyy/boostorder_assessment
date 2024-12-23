@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -22,7 +23,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   late StreamSubscription _connectionSubscription;
   final ProductService _productService = ProductService();
   // final controller = ScrollController();
-  List<Product> _products = [];
+  final List<Product> _products = [];
   String? _message;
   bool _isLoading = true; // Track loading state
   int page = 1;
@@ -102,7 +103,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
   void _handleAddToCart(CartItem item) {
     setState(() {
       CartState.cartItems.value.add(item);
-      CartState.cartItems.notifyListeners(); // Notify listeners explicitly
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -185,7 +185,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
                 color: Colors.white,
               ), // Kebab Menu Icon
               onSelected: (String value) {
-                print('Selected: $value');
+                log('Selected: $value');
               },
               color: Colors.white,
               itemBuilder: (BuildContext context) {

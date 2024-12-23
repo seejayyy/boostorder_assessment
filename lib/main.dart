@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/catalogpage': (context) => const CatalogScreen()
       },
-      theme: new ThemeData(scaffoldBackgroundColor: Colors.white),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
     );
   }

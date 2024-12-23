@@ -29,7 +29,7 @@ class _CartScreenState extends State<CartScreen> {
         price = double.tryParse(item.product.variations[item.variationIndex].regularPrice ?? '0.00')
             ?.toStringAsFixed(2) ?? '0.00';
       }
-      double totalPrice = double.tryParse(price)! * item.quantity ?? 0.0;
+      double totalPrice = double.tryParse(price)! * item.quantity;
       total += totalPrice; // Add the item's total price to the total
     }
     return total;
@@ -51,7 +51,7 @@ class _CartScreenState extends State<CartScreen> {
     }
 
     double productTotalPrice = 0.00;
-    productTotalPrice = double.tryParse(price)! * cartItem.quantity ?? 0.00; // Convert price to double
+    productTotalPrice = double.tryParse(price)! * cartItem.quantity; // Convert price to double
 
     return Dismissible(
       key: ValueKey(cartItem.product.sku), // Use a unique key based on cartItem.sku or another unique value
@@ -92,7 +92,7 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           Text('${index + 1}. ',
                           style: TextStyle(fontWeight: FontWeight.bold),),
-                          Text('${cartItem.product.variations[cartItem.variationIndex].sku.toString()}')
+                          Text(cartItem.product.variations[cartItem.variationIndex].sku.toString())
                         ],
                       ),
                       Text(cartItem.product.name.toString(),
@@ -134,7 +134,8 @@ class _CartScreenState extends State<CartScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Flexible(
+                  SizedBox(
+                    width: 100,
                     child: IntrinsicWidth(
                       child: Container(
                         padding: EdgeInsets.only(left: 8), // Optional padding inside the container
@@ -146,22 +147,23 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Order'),
-                            Text('${cartItem.quantity} ${cartItem.uom} >',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                          ],
-                        ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Order'),
+                              Text('${cartItem.quantity} ${cartItem.uom} >',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ],
+                          ),
                       ),
                     ),
                   ),
                   SizedBox(width: 16),
-                  Flexible(
+                  SizedBox(
+                    width: 100,
                     child: Container(
                       padding: EdgeInsets.only(left: 8), // Optional padding inside the container
                       decoration: const BoxDecoration(
