@@ -1,6 +1,5 @@
+import 'package:flutter_projects/models/product_attributes.dart';
 import 'package:hive/hive.dart';
-import 'package:flutter_projects/models/product_category.dart';
-import 'package:flutter_projects/models/product_dimensions.dart';
 import 'package:flutter_projects/models/product_image.dart';
 import 'package:flutter_projects/models/product_variation.dart';
 
@@ -9,103 +8,80 @@ part 'product.g.dart';
 @HiveType(typeId: 0) // Unique typeId for Product
 class Product extends HiveObject {
   @HiveField(0)
-  final num id;
+  final int id;
 
   @HiveField(1)
-  final String name;
+  final String? name;
 
   @HiveField(2)
-  final String? dateModified;
-
-  @HiveField(3)
-  final String type;
-
-  @HiveField(4)
   final String status;
 
-  @HiveField(5)
+  @HiveField(3)
+  final String? catalogVisibility;
+
+  @HiveField(4)
   final String sku;
 
-  @HiveField(6)
+  @HiveField(5)
   final String? regularPrice;
 
+  @HiveField(6)
+  final int stockQuantity;
+
   @HiveField(7)
-  final bool manageStock;
-
-  @HiveField(8)
-  final bool inStock;
-
-  @HiveField(9)
-  final Dimensions dimensions;
-
-  @HiveField(10)
-  final List<Category> categories;
-
-  @HiveField(11)
   final List<ImageData> images;
 
-  @HiveField(12)
+  @HiveField(8)
+  final List<Attributes> attributes;
+
+  @HiveField(9)
   final List<Variation> variations;
 
   Product({
     required this.id,
     required this.name,
-    required this.dateModified,
-    required this.type,
     required this.status,
+    required this.catalogVisibility,
     required this.sku,
     required this.regularPrice,
-    required this.manageStock,
-    required this.inStock,
-    required this.dimensions,
-    required this.categories,
+    required this.stockQuantity,
     required this.images,
+    required this.attributes,
     required this.variations,
   });
 
   // JSON to Product
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json['id'],
-      name: json['name'],
-      dateModified: json['date_modified'],
-      type: json['type'],
-      status: json['status'],
-      sku: json['sku'],
-      regularPrice: json['regular_price'],
-      manageStock: json['manage_stock'],
-      inStock: json['in_stock'],
-      dimensions: Dimensions.fromJson(json['dimensions']),
-      categories: (json['categories'] as List)
-          .map((category) => Category.fromJson(category))
-          .toList(),
-      images: (json['images'] as List)
-          .map((image) => ImageData.fromJson(image))
-          .toList(),
-      variations: (json['variations'] as List)
-          .map((variation) => Variation.fromJson(variation))
-          .toList(),
-    );
-  }
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+    id: json['id'],
+    name: json['name'],
+    status: json['status'],
+    catalogVisibility: json['catalog_visibility'],
+    sku: json['sku'],
+    regularPrice: json['regular_price'],
+    stockQuantity: json['stock_quantity'] ?? 0,
+    images: (json['images'] as List<dynamic>)
+        .map((e) => ImageData.fromJson(e))
+        .toList(),
+    attributes: (json['attributes'] as List<dynamic>)
+        .map((e) => Attributes.fromJson(e, AttributeType.parent))
+        .toList(),
+    variations: (json['variations'] as List<dynamic>)
+        .map((e) => Variation.fromJson(e))
+        .toList(),
+  );
 
   // Product to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'date_modified': dateModified,
-      'type': type,
-      'status': status,
-      'sku': sku,
-      'regular_price': regularPrice,
-      'manage_stock': manageStock,
-      'in_stock': inStock,
-      'dimensions': dimensions.toJson(),
-      'categories': categories.map((category) => category.toJson()).toList(),
-      'images': images.map((image) => image.toJson()).toList(),
-      'variations': variations.map((variation) => variation.toJson()).toList(),
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'catalog_visibility': catalogVisibility,
+    'sku': sku,
+    'regular_price': regularPrice,
+    'stock_quantity': stockQuantity,
+    'images': images.map((e) => e.toJson()).toList(),
+    'attributes': attributes.map((e) => e.toJson()).toList(),
+    'variations': variations.map((e) => e.toJson()).toList(),
+  };
 
   @override
   String toString(){
@@ -121,17 +97,11 @@ class Product extends HiveObject {
     Product:
       ID: $id
       Name: $name
-      Date Modified: $dateModified
-      Type: $type
-      Status: $status
       SKU: $sku
-      In Stock: $inStock
-      Manage Stock: $manageStock
       Regular Price: $regularPrice
-      Categories: ${categories.map((c) => c.name).join(', ')}
-      Dimension: $dimensions
       Images: $imageString
       Variations: $variationsString
     ''';
   }
 }
+

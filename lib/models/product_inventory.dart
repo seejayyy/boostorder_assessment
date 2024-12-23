@@ -2,13 +2,13 @@ import 'package:hive/hive.dart';
 
 part 'product_inventory.g.dart';
 
-@HiveType(typeId: 5)
+@HiveType(typeId: 3)
 class Inventory extends HiveObject {
   @HiveField(0)
-  final num branchId;
+  final int branchId;
 
   @HiveField(1)
-  final num? batchId;
+  final int? batchId;
 
   @HiveField(2)
   final num stockQuantity;

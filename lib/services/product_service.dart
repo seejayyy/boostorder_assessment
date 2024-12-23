@@ -57,17 +57,14 @@ class ProductService {
       return Product(
         id: item.id,
         name: item.name,
-        dateModified: item.dateModified,
-        type: item.type,
         status: item.status,
         sku: item.sku,
         regularPrice: item.regularPrice,
-        manageStock: item.manageStock,
-        inStock: item.inStock,
-        dimensions: item.dimensions,
-        categories: item.categories,
         images: item.images,
         variations: item.variations,
+        catalogVisibility: item.catalog_visibility,
+        stockQuantity: item.stock_quantity,
+        attributes: item.attributes,
       );
     }).toList();
 
@@ -78,7 +75,6 @@ class ProductService {
   Future<void> saveProduct(List<Product> products) async {
     final box = await Hive.openBox<Product>('productsBox');
     for (Product product in products) {
-      log(product.toString());
       await box.put(product.id, product);
     }
     log('Products saved successfully!');

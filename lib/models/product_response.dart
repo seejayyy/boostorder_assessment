@@ -3,7 +3,7 @@ import 'product.dart';
 
 part 'product_response.g.dart';
 
-@HiveType(typeId: 6) // Unique typeId for ProductResponse
+@HiveType(typeId: 4) // Unique typeId for ProductResponse
 class ProductResponse extends HiveObject {
   @HiveField(0)
   final List<Product> products;
