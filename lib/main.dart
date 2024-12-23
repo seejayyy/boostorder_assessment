@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         '/catalogpage': (context) => const CatalogScreen()
       },
       theme: new ThemeData(scaffoldBackgroundColor: Colors.white),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
