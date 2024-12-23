@@ -12,9 +12,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('E-commerce app'),
+        title: Text('Boostorder E-commerce App'),
         backgroundColor: Colors.blue,
-        titleTextStyle: TextStyle(color: Colors.white),
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
       ),
       body:
         Center(

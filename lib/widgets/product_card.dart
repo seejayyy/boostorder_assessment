@@ -136,12 +136,19 @@ class _ProductCardState extends State<ProductCard> {
                   borderRadius: BorderRadius.circular(8.0),
                   child: imageUrl.startsWith('http')
                       ? Image(
-                          image: ResizeImage(
-                            NetworkImage(imageUrl),
-                            height: 64,
-                            width: 64,
-                          ),
-                        )
+                    image: ResizeImage(
+                      NetworkImage(imageUrl),
+                      height: 64,
+                      width: 64,
+                    ),
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(
+                        Icons.broken_image,
+                        size: 64,
+                        color: Colors.grey,
+                      );
+                    },
+                  )
                       : Image.asset(
                           imageUrl,
                           height: 64,

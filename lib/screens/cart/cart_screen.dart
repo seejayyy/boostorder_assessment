@@ -111,6 +111,13 @@ class _CartScreenState extends State<CartScreen> {
                         height: 64,
                         width: 64,
                       ),
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.broken_image,
+                          size: 64,
+                          color: Colors.grey,
+                        );
+                      },
                     )
                         : Image.asset(
                       imageUrl,

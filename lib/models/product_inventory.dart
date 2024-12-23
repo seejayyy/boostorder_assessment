@@ -6,10 +6,13 @@ class Inventory {
 
   final num? stockQuantity;
 
+  final num? physicalStockQuantity;
+
   Inventory({
     required this.branchId,
     this.batchId,
     required this.stockQuantity,
+    this.physicalStockQuantity,
   });
 
   factory Inventory.fromJson(Map<String, dynamic> json) {
@@ -17,14 +20,16 @@ class Inventory {
       branchId: json['branch_id'],
       batchId: json['batch_id'],
       stockQuantity: json['stock_quantity'],
+      physicalStockQuantity: json['physical_stock_quantity']
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': branchId,
-      'name': batchId,
-      'slug': stockQuantity,
+      'branchId': branchId,
+      'batchId': batchId,
+      'stockQuantity': stockQuantity,
+      'physicalStockQuantity': physicalStockQuantity,
     };
   }
 
